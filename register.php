@@ -1,18 +1,8 @@
-<?php
-include "system/header.php";
-
-if(@$_POST['action'] == "proc"){
-    $username = mysqli_real_escape_string($database, $_POST['username']);
-    $email = mysqli_real_escape_string($database, $_POST['email']);
-    $password = password($_POST['password']);
-    $bcardnum = mysqli_real_escape_string($database, $_POST['BcardNo']);
-    echo $username;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,41 +21,81 @@ if(@$_POST['action'] == "proc"){
 </head>
 <body>
     <div class="container">
-        <form class="form-register" name="reg" role="form" action="/registration" method="post">
+        <form class="form-row" name="reg" role="form" action="/registration" method="post">
             <div class="logo-wrapper">
                 <img class="logo" src="/images/marta_logo.png">
             </div>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus autocapitalize="off"><span id="username_status"></span>
-            <input type="text" id="email" name="email" class="form-control" placeholder="Email Address" required autofocus autocapitalize="off"><span id="email_status"></span>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-            <input type="password" id="confirmpassword" name="confirmpassword" class="form-control" placeholder="Confirm Password" required><span id="password_match"></span>
+            <div class="form-group row">
+                <label for="inputUsername" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                    <input type="username" class="form-control" id="username" name="username" placeholder="Username" autofocus autocapitalize="off" required>
+                </div>
 
-            <input type="radio" name="breezecard" value="exist" class="enable_tb" required><span> Use my existing Breeze Card</span>
-            <input type="text" id="BcardNo" name="BcardNo" class="form-control" placeholder="Card Number" required>
-            <input type="radio" name="breezecard" value="new" class="disable_tb" required><span> Get a new Breeze Card</span>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" autocapitalize="off" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="confirmPassword" class="col-sm-2 col-form-label">Confirm Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmpassword" placeholder="Confirm Password" required>
+                </div>
+            </div>
+            <fieldset class="form-group">
+                <div class="row">
+                    <label for="breezecard" class="col-sm-2 col-form-label">Breeze Card</label>
+                    <div class="col-sm-8">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input enable_tb" type="radio" name="breezecard" id="breezecard1" value="option1" required>
+                                Use my existing Breeze Card
+                            </label>
+                            <div class="col-sm-12">
+                                <input type="username" class="form-control" id="inputCardno" name="bcardno" placeholder="Card Number" required></br>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input disable_tb" type="radio" name="breezecard" id="breezecard2" value="option2" required>
+                                Get a new Breeze Card
+                            </label>
+                        </div>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-            <input type="hidden" name="action" value="proc">
-
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                </br>
+                    <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                </div>
+            </div>
         </form>
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/usernameck.js"></script>
         <script type="text/javascript" src="js/emailck.js"></script>
         <script type="text/javascript" src="js/pwmatch.js"></script>
+        
         <script>
-            $("#BcardNo").val('');
-            $("#BcardNo").prop("disabled",true);
+            $("#inputCardno").val('');
+            $("#inputCardno").prop("disabled",true);
             $('input:radio').click(function() {
                 if($(this).hasClass('enable_tb')) {
-                    $("#BcardNo").prop("disabled",false);
+                    $("#inputCardno").prop("disabled",false);
                 } else if ($(this).hasClass('disable_tb')) {
-                    $("#BcardNo").val('');
-                    $("#BcardNo").prop("disabled",true);
+                    $("#inputCardno").val('');
+                    $("#inputCardno").prop("disabled",true);
                 }
             });
         </script>
-
     </div>
 </body>
-
-</html>

@@ -5,7 +5,7 @@ include "system/header.php";
     $password = $_POST['password'];
     $confirmpassword = $_POST['confirmpassword'];
     $email = $_POST['email'];
-    $cardno = $_POST['BcardNo'];
+    $cardno = $_POST['bcardno'];
 
     //PHP에서 유효성 재확인
     //아이디 중복검사.
@@ -47,10 +47,10 @@ include "system/header.php";
 
     //이제부터 넣기 시작
     $sql = "INSERT INTO user VALUES('{$username}','{$password}',0,1);";
-    $sql2 = "INSERT INTO passenger VALUES('{$username}','{$email}');";
-    $sql3 = "INSERT INTO breezecard VALUES('{$cardno}',0,'{$username}');";
+    $sql .= "INSERT INTO passenger VALUES('{$username}','{$email}');";
+    $sql .= "INSERT INTO breezecard VALUES('{$cardno}',0,'{$username}');";
 
-    if($database->query($sql) && $database->query($sql2) && $database->query($sql3)){
-        location("/passfunc");
+    if($database->multi_query($sql)){
+        location("/authentication");
     }
 ?>
