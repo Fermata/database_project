@@ -7,10 +7,13 @@ include "system/head.php";
                 <label for="breezecard" class="col-sm-3 col-form-label">Breeze Card</label>
                 <div class="col-sm-6">
                     <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
+                        <option selected="selected" value="">-- Select an option --</option>
+                        <?php
+                        $sql = "SELECT BreezecardNum From Breezecard";
+                        $result = mysqli_query($database,$sql);
+                        while($row=mysqli_fetch_array($result))
+                        echo "<option value='" . $row['BreezecardNum'] . "'>" . "</option>";
+                        ?>
                     </select>
                 </div>
                 <button type="button" onclick="location.href = 'managecards';" class="col-sm-3 btn btn-link">Manage Cards</button>
@@ -20,7 +23,7 @@ include "system/head.php";
             <div class="row">
                 <label for="balance" class="col-sm-3 col-form-label">Balance</label>
                 <div class="col-sm-9">
-                    <p class="form-control-static">email@example.com</p>
+                    <p class="form-control-static"><<?php  ?></p>
                 </div>
             </div>
         </div>
