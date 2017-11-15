@@ -1,79 +1,70 @@
-CREATE TABLE USER(
-	username VARCHAR(100),
-	password VARCHAR(100) NOT NULL,
-	isAdmin BOOLEAN NOT NULL DEFAULT 0,
-    isPassenger BOOLEAN NOT NULL DEFAULT 1,
-	PRIMARY KEY (username)
-) ENGINE = InnoDB;
+CREATE TABLE User(
+	Username 		varchar(50),
+	Password 		VARCHAR(100) NOT NULL,  -- <====(Can be INT, CHAR, VARCHAR, or BLOB)
+	IsAdmin 		boolean NOT NULL,
+	PRIMARY KEY (Username)
+) ENGINE=InnoDB;
 
-CREATE TABLE PASSENGER(
-	Pusername VARCHAR(100),
-	Email VARCHAR(255) NOT NULL,
-	PRIMARY KEY (Pusername),
+CREATE TABLE Passenger(
+	Username 		varchar(50),
+	Email 			varchar(50) NOT NULL,
+	PRIMARY KEY (Username),  -- <====(Can be Email also, username is better though)
 	UNIQUE (Email),
-	CONSTRAINT passuser_fk FOREIGN KEY (Pusername) REFERENCES USER(Username)
+	FOREIGN KEY (Username) REFERENCES User(Username)
 		ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE=InnoDB;
 
-CREATE TABLE BREEZECARD(
-	Bnumber CHAR(16),
-	Value DECIMAL(6, 2) NOT NULL DEFAULT 0,
-	Pname VARCHAR(100),
-	PRIMARY KEY (Bnumber),
-	CHECK (Value >= 0 AND Value <= 1000),
-	CONSTRAINT breezepass_fk FOREIGN KEY(Pname) REFERENCES PASSENGER(Pusername)
-		ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE = InnoDB;
+CREATE TABLE Breezecard(
+	BreezecardNum 	char(16),
+	Value 			decimal(6,2) NOT NULL,
+	BelongsTo		varchar(50),
+	PRIMARY KEY (BreezecardNum),
+	FOREIGN KEY (BelongsTo) REFERENCES Passenger(Username) -- <====(Can also reference Email)
+		ON DELETE SET NULL ON UPDATE CASCADE, -- <== Must be SET NULL
+	CHECK (Value >= 0.00 AND Value <= 1000.00)
+) ENGINE=InnoDB;
 
-CREATE TABLE STATION(
-	StopID VARCHAR(6),
-	EnterFare DECIMAL(4, 2) NOT NULL,
-	ClosedStatus BOOLEAN NOT NULL,
-	isBusstop BOOLEAN NOT NULL,
-	isTrainstop BOOLEAN NOT NULL,
- 	PRIMARY KEY (StopID),
-	CHECK(EnterFare >= .00 AND EnterFare <= 50.00)
-) ENGINE = InnoDB;
-
-CREATE TABLE TRIP(
-	CurrentFare DECIMAL(4, 2) NOT NULL DEFAULT 0,
-	Start_Time DATETIME,
-	Bnum CHAR(16),
-	SstopID VARCHAR(6) NOT NULL,
-	EstopID VARCHAR(6),
-	PRIMARY KEY(Start_Time, Bnum),
-	CONSTRAINT bnum_fk FOREIGN KEY (Bnum) REFERENCES Breezecard(Bnumber)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT startstop_fk FOREIGN KEY(SstopID) REFERENCES STATION(StopID)
+CREATE TABLE Conflict(
+	Username 		varchar(50), -- <====(Can also be Email, although username is better)
+	BreezecardNum 	char(16),
+	DateTime 		timestamp NOT NULL,
+	CONSTRAINT Pk_Conflict PRIMARY KEY (Username, BreezecardNum),
+	FOREIGN KEY (Username) REFERENCES Passenger(Username)  -- <====(Can also reference Email)
 		ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT endstop_fk FOREIGN KEY(EstopID) REFERENCES STATION(StopID)
+	FOREIGN KEY (BreezecardNum) REFERENCES Breezecard(BreezecardNum)
 		ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE=InnoDB;
 
-CREATE TABLE BUS_STATION(
-	BstopID VARCHAR(6) PRIMARY KEY,
-	Bname VARCHAR(100) NOT NULL,
-	Intersection VARCHAR(100),
-	UNIQUE(Bname),
-	CONSTRAINT bus_fk FOREIGN KEY(BstopID) REFERENCES STATION(StopID)
-		ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+CREATE TABLE Station(
+	StopID 			varchar(50),
+	Name 			varchar(50) NOT NULL,
+	EnterFare 		decimal(4,2) NOT NULL,
+	ClosedStatus 	boolean NOT NULL,
+	IsTrain 		boolean NOT NULL,
+	PRIMARY KEY (StopID),
+	UNIQUE (Name, IsTrain),
+	CHECK (EnterFare >= 0.00 AND EnterFare <= 50.00)
+) ENGINE=InnoDB;
 
-CREATE TABLE TRAIN_STATION(
-	TstopID VARCHAR(6) PRIMARY KEY,
-	Tname VARCHAR(100) NOT NULL,
-	UNIQUE(Tname),
-	CONSTRAINT train_fk FOREIGN KEY(TstopID) REFERENCES STATION(StopID)
-		ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
-
-CREATE TABLE CONFLICT(
-	P_name VARCHAR(100),
-	B_num CHAR(16),
-	Date_Time DATETIME NOT NULL,
-	PRIMARY KEY(P_name, B_num),
-	CONSTRAINT p_name_fk FOREIGN KEY(P_name) REFERENCES PASSENGER(Pusername)
+CREATE TABLE Trip(
+	Tripfare 		decimal(4,2) NOT NULL,
+	StartTime 		timestamp,
+	BreezecardNum 	char(16),
+	StartsAt 		varchar(50) NOT NULL,
+	EndsAt 			varchar(50),
+	CONSTRAINT Pk_Trip PRIMARY KEY (StartTime, BreezecardNum),
+	FOREIGN KEY (BreezecardNum) REFERENCES Breezecard(BreezecardNum)
 		ON DELETE CASCADE ON UPDATE CASCADE,
-	CONSTRAINT b_num_fk FOREIGN KEY(B_num) REFERENCES BREEZECARD(Bnumber)
+	FOREIGN KEY (StartsAt) REFERENCES Station(StopID)
+		ON DELETE RESTRICT ON UPDATE CASCADE,    -- <===(ON DELETE SET NULL ok too)
+	FOREIGN KEY (EndsAt) REFERENCES Station(StopID)
+		ON DELETE RESTRICT ON UPDATE CASCADE     -- <===(ON DELETE SET NULL ok too)
+) ENGINE=InnoDB;
+
+CREATE TABLE BusStationIntersection(
+	StopID 			varchar(50),
+	Intersection 	varchar(255), -- <====(OK to be NOT NULL)
+	PRIMARY KEY (StopID),
+	FOREIGN KEY (StopID) REFERENCES Station(StopID)
 		ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB;
+) ENGINE=InnoDB;
