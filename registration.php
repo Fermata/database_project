@@ -3,50 +3,59 @@ include "system/header.php";
 
     $username = $_POST['username'];
     $password = $_POST['password'];
+    if (strlen($password) < 8) {
+        echo 'Password should have at least 8 characters';
+        exit;
+    }
     $confirmpassword = $_POST['confirmpassword'];
     $email = $_POST['email'];
-    $cardno = $_POST['bcardno'];
-
+    if (!empty($_POST['bcardno'])) {
+        $cardno = $_POST['bcardno'];
+    } else {
+        $cardno = randomNumber(16);
+        $sql = "SELECT * FROM Breezecard WHERE BreezecardNum = '{$cardno}'";
+        $res = $database->query($sql);
+        if($database->query($sql) === TRUE){
+            $duplicate = TRUE;
+            while ($duplicate === TRUE) {
+                $cardno = randomNumber(16);
+                if($database->query($sql) === TRUE){
+                    $duplicate = TRUE;
+                } else {
+                    $duplicate = FALSE;
+                }
+            }
+        }
+    }
+    if ($database->connect_errno) {
+        printf("Connect failed: %s\n", $database->connect_error);
+        exit();
+    }
     //PHP에서 유효성 재확인
     //아이디 중복검사.
     $sql = "SELECT * FROM user WHERE username = '{$username}'";
     $res = $database->query($sql);
-    if($res->num_rows >= 1){
-        echo '이미 존재하는 아이디가 있습니다.';
+    if($database->query($sql) === TRUE){
+        echo 'Username already exists.';
         exit;
     }
     $sql = "SELECT * FROM PASSENGER WHERE email = '{$email}'";
     $res = $database->query($sql);
-    if($res->num_rows >= 1){
-        echo '이미 존재하는 이메일이 있습니다.';
-        exit;
-    }
-    $sql = "SELECT * FROM Breezecard WHERE Bnumber = '{$cardno}'";
-    $res = $database->query($sql);
-    if($res->num_rows >= 1){
-        echo '이미 존재하는 카드입니다.';
+    if($database->query($sql) === TRUE){
+        echo 'Email already exists.';
         exit;
     }
 
     //비밀번호 일치하는지 확인
     if($password !== $confirmpassword){
-        echo '비밀번호가 일치하지 않습니다.';
+        echo 'Passwords do not match';
         exit;
     }else{
         //비밀번호를 암호화 처리.
-        $password = password($password);;
+        $password = password($password);
     }
-
-    //이메일 주소가 올바른지
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-
-    if($email != true){
-        echo "올바른 이메일 주소가 아닙니다.";
-        exit;
-    }
-
     //이제부터 넣기 시작
-    $sql = "INSERT INTO user VALUES('{$username}','{$password}',0,1);";
+    $sql = "INSERT INTO user VALUES('{$username}','{$password}',0);";
     $sql .= "INSERT INTO passenger VALUES('{$username}','{$email}');";
     $sql .= "INSERT INTO breezecard VALUES('{$cardno}',0,'{$username}');";
 

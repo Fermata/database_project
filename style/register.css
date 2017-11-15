@@ -9,82 +9,33 @@ body {
     margin-bottom:40px;
 }
 .logo {
-    width: 190px;
+    width: 300px;
 }
-.form-register {
-    max-width: 330px;
-    padding-top: 15px;
+.form-row {
+    max-width: 600px;
+    padding-top: 25px;
     padding-bottom: 0px;
     margin: 0 auto;
-    font-size: 14px;
+    font-size: 16px;
+}
+.form-row .form-group {
+    max-width: 600px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin: 0 auto;
+    font-size: 16px;
+}
 
-}
-.form-register .form-signin-heading,
-.form-register .checkbox {
-    margin-bottom: 10px;
-}
-.form-register .checkbox {
-    font-weight: normal;
-}
-.form-register .form-control {
-    position: relative;
-    height: auto;
+.form-row .form-control {
+    position:relative;
+    height:auto;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     padding: 10px;
     font-size: 16px;
 }
-.form-register .form-control:focus {
+
+.form-row .form-control:focus {
     z-index: 2;
-}
-.form-register input[name="username"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.form-register input[name="password"] {
-    margin-bottom: -1px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.form-register input[name="confirmpassword"] {
-    margin-bottom: 15px;
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-}
-.form-register input[name="email"] {
-    margin-bottom: -1px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.form-register input[id="breezecard"] {
-
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.form-register .disable_tb {
-    margin-bottom: 20px;
-}
-
-.form-register input[type="radio"]:checked + span
-{
-    font-weight: bold;
-}
-
-.form-register span {
-    display: inline-block;
-    background-color: transparent;
-    padding: 4px 11px;
-    font-size: 16px;
-    cursor: pointer;
 }

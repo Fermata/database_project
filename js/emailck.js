@@ -1,15 +1,8 @@
-
-$('#email').keyup(function() {
-
-    var email = $(this).val();
-
-    $('#email_status').text('Searching...');
-
+$('#email').blur(function() {
+    var email = $('#email').val();
     if(email != '') {
         $.post('email_check.php', {email: email}, function(data) {
-            $('#email_status').text(data);
+            alert(data);
         });
-    }else{
-        $('#email_status').text('asdfasd');
     }
 });

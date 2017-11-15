@@ -4,19 +4,15 @@
 	error_reporting(-1);
 	ini_set('display_errors', '1');
 
-	define('DATABASE_SERVER', 'localhost');
-	define('DATABASE_USER', 'root');
-	define('DATABASE_PASS', '111111');
-	define('DATABASE_DB', 'cs4400');
-
-	define('GRADUATE_YEAR', 1);
-	define('YEAR_OF',2);
+	define('DATABASE_SERVER', 'academic-mysql.cc.gatech.edu');
+	define('DATABASE_USER', 'cs4400_Group_112');
+	define('DATABASE_PASS', 'ZIFRibn7');
+	define('DATABASE_DB', 'cs4400_Group_112');
 
 	$database = mysqli_connect(DATABASE_SERVER,DATABASE_USER,DATABASE_PASS, DATABASE_DB);
 
-
 	function password($string){
-		return sha1(md5($string) . $string . '19b0293%@GZ8(v!cga2$bBEA3Gz' . sha1($string) . '290b824jk2nv23%iu9u^kvhjek3$vhabl');
+		return md5($string);
 	}
 
 	function fetch($result, $zero = false){
@@ -29,6 +25,16 @@
 			}
 		}
 		return $row;
+	}
+
+	function randomNumber($length) {
+	    $result = '';
+
+	    for($i = 0; $i < $length; $i++) {
+	        $result .= mt_rand(0, 9);
+	    }
+
+	    return $result;
 	}
 
 	function location ($location){
@@ -45,9 +51,9 @@
 		return $today;
 	}
 
-	function adminonly ($force = false){
+	function adminonly ($force = true){
 		global $_USER;
-		if(!$_USER['admin'] || $force){
+		if(!$force){
 			header('HTTP/1.0 403 Forbidden');
 			include('error/403.htm');
 			exit();

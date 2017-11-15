@@ -3,7 +3,7 @@ include "system/header.php";
 $loginFailure = false;
 
 if(authenticated){
-    location("/passfunc");
+    location("/home");
 }
 
 if(@$_POST['action'] == "proc"){
@@ -14,7 +14,7 @@ if(@$_POST['action'] == "proc"){
         $user = fetch($result, true);
         $_SESSION['authenticated'] = true;
         $_SESSION['username'] = $user['username'];
-        location("/passfunc");
+        location("/home");
     }else{
         $loginFailure = true;
     }
@@ -45,9 +45,6 @@ if(@$_POST['action'] == "proc"){
 
     <div class="container">
         <form class="form-signin" role="form" action="/authentication" method="post">
-            <div class="logo-wrapper">
-              <img class="logo" src="/images/marta_logo.png">
-            </div>
             <input type="text" name="username" class="form-control" placeholder="Username" required autofocus autocapitalize="off">
             <input type="password" name="password" class="form-control" placeholder="Password" required>
             <input type="hidden" name="action" value="proc">
