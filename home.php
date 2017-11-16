@@ -36,11 +36,11 @@ include "system/head.php";
                     <select class="form-control">
                         <option selected="selected" value="">-- Select an option --</option>
                         <?php
-                        $sql = "SELECT BreezecardNum From Breezecard";
+                        $sql = "SELECT * From Breezecard";
                         $result = mysqli_query($database,$sql);
                         while($row = mysqli_fetch_array($result)){
                             ?>
-                            <option><?=$row[1]?></option>
+                            <option><?=$row['Value']?></option>
                         <?php }?>
                     </select>
                 </div>
