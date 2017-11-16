@@ -40,7 +40,7 @@ include "system/head.php";
                         $result = mysqli_query($database,$sql);
                         while($row = mysqli_fetch_array($result)){
                             ?>
-                            <option><?=$row['Value']?></option>
+                            <option><?=$row[1]?></option>
                         <?php }?>
                     </select>
                 </div>
