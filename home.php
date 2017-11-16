@@ -25,7 +25,7 @@ include "system/head.php";
             <div class="row">
                 <label for="balance" class="col-sm-3 col-form-label">Balance</label>
                 <div class="col-sm-9">
-                    <p class="form-control-static"><<?php echo $Value; ?></p>
+                    <p class="form-control-static"><<?php echo $value; ?></p>
                 </div>
             </div>
         </div>
