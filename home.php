@@ -9,12 +9,12 @@ include "system/head.php";
                     <select class="form-control">
                         <option selected="selected" value="">-- Select an option --</option>
                         <?php
-                        $sql = "SELECT BreezecardNum From Breezecard";
+                        $sql = "SELECT * From Breezecard";
                         $result = mysqli_query($database,$sql);
                         while($row = mysqli_fetch_array($result)){
+                            $value = $row['Value'];
                             ?>
                             <option><?=$row['BreezecardNum']?></option>
-                            <option><?=$row['Value']?></option>
                         <?php }?>
                     </select>
                 </div>
@@ -25,7 +25,7 @@ include "system/head.php";
             <div class="row">
                 <label for="balance" class="col-sm-3 col-form-label">Balance</label>
                 <div class="col-sm-9">
-                    <p class="form-control-static"><<?php ?></p>
+                    <p class="form-control-static"><<?php echo $Value; ?></p>
                 </div>
             </div>
         </div>
