@@ -9,8 +9,8 @@ if(authenticated){
 if(@$_POST['action'] == "proc"){
     $username = mysqli_real_escape_string($database, $_POST['username']);
     $password = password($_POST['password']);
-    $result = mysqli_query($database, "SELECT * FROM user WHERE username = '{$username}' AND password = '{$password}'");
-    if(mysqli_num_rows($result) == 1){
+    $sql = "SELECT * FROM User WHERE Username = '{$sername}' AND Password = '{$password}'";
+    if($database->query($sql) === TRUE){
         $user = fetch($result, true);
         $_SESSION['authenticated'] = true;
         $_SESSION['username'] = $user['username'];
@@ -42,7 +42,6 @@ if(@$_POST['action'] == "proc"){
 </head>
 
 <body>
-
     <div class="container">
         <form class="form-signin" role="form" action="/authentication" method="post">
             <input type="text" name="username" class="form-control" placeholder="Username" required autofocus autocapitalize="off">
@@ -56,12 +55,11 @@ if(@$_POST['action'] == "proc"){
             }
             if(@$_GET['lo']=='s'){
                 ?>
-                <div class="alert alert-success">Welcome</div>
+                <div class="alert alert-success"></div>
                 <?php
             }
             ?>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-
         </form>
         <form class="form-register" role="form" action="/register" method="post">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>

@@ -1,0 +1,10 @@
+
+js/mysignuform.js
+.DS_Store
+.htaccess
+system/admin-jameditor.php
+system/admin-jamlist.php
+system/foot.php
+system/jamlist.php
+system/jamsubmit.php
+system/jamview.php
