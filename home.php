@@ -1,7 +1,6 @@
 <?php
 include "system/head.php";
 ?>
-    <div class="container">
         <div class="form-group">
             <div class="row">
                 <label for="breezecard" class="col-sm-3 col-form-label">Breeze Card</label>
