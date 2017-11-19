@@ -19,9 +19,9 @@ include "system/head.php";
                 while($data = mysqli_fetch_array($database,$query)){
 					?>
 					<tr>
-						<td><?php=$data[0]?></td>
-						<td><?php=$data['password']?></td>
-						<td><?php=$data['isAdmin']?></td>
+						<td><?=$data[0]?></td>
+						<td><?=$data['password']?></td>
+						<td><?=$data['isAdmin']?></td>
                         <td>abc</td>
 					</tr>
 				<? } ?>
