@@ -20,7 +20,7 @@ $('.ok').on('click', function(e){
     alert($("#table tr.selected td:first").html());
 });
 </script>
-    <div class="container">
+    <div class="col-md-7">
         <label>Breeze Card</label>
         <table id="table" class="table table-striped">
             <thead>

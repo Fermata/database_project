@@ -1,11 +1,15 @@
 <?php
-include "system/header.php";
+    function location ($location){
+		header("Location: $location");
+		exit();
+	}
+    $database = mysqli_connect('localhost','root','111111', 'cs4400_Group_112');
 
     $username = $_POST['username'];
     $password = $_POST['password'];
     if (strlen($password) < 8) {
         echo 'Password should have at least 8 characters';
-        exit;
+        exit();
     }
     $confirmpassword = $_POST['confirmpassword'];
     $email = $_POST['email'];
@@ -33,33 +37,42 @@ include "system/header.php";
     }
     //PHP에서 유효성 재확인
     //아이디 중복검사.
-    $sql = "SELECT * FROM user WHERE username = '{$username}'";
-    $res = $database->query($sql);
+    $sql = "SELECT * FROM User WHERE Username = '{$username}'";
     if($database->query($sql) === TRUE){
         echo 'Username already exists.';
-        exit;
+        exit();
     }
-    $sql = "SELECT * FROM PASSENGER WHERE email = '{$email}'";
-    $res = $database->query($sql);
+    $sql = "SELECT * FROM Passenger WHERE email = '{$email}'";
     if($database->query($sql) === TRUE){
         echo 'Email already exists.';
-        exit;
+        exit();
     }
 
     //비밀번호 일치하는지 확인
     if($password !== $confirmpassword){
         echo 'Passwords do not match';
-        exit;
+        exit();
     }else{
         //비밀번호를 암호화 처리.
-        $password = password($password);
+        $password = md5($password);
     }
-    //이제부터 넣기 시작
-    $sql = "INSERT INTO user VALUES('{$username}','{$password}',0);";
-    $sql .= "INSERT INTO passenger VALUES('{$username}','{$email}');";
-    $sql .= "INSERT INTO breezecard VALUES('{$cardno}',0,'{$username}');";
+    $sql = "SELECT * FROM Breezecard WHERE BreezecardNum = '{$cardno}' AND BelongsTo IS NOT NULL";
+    $result = mysqli_query($database, $sql);
+    if(mysqli_num_rows($result) >= 1){
+        $duplicate = 1;
+    }else{
+        $duplicate = 0;        
+    }
 
-    if($database->multi_query($sql)){
-        location("/authentication");
+    //이제부터 넣기 시작
+    $sql = "INSERT INTO User VALUES('{$username}','{$password}',0);";
+    $sql .= "INSERT INTO Passenger VALUES('{$username}','{$email}');";
+    if($duplicate === 1){
+        $my_date = date("Y-m-d H:i:s");
+        $sql .= "INSERT INTO Conflict VALUES('{$username}','{$cardno}','{$my_date}');";
+    }else{
+        $sql .= "INSERT INTO Breezecard (BreezecardNum, BelongsTo) VALUES('{$cardno}','{$username}');";
     }
+    $database->multi_query($sql) or die(mysqli_error($database));
+    location("/authentication");
 ?>

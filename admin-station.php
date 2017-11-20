@@ -1,7 +1,7 @@
 <?php
 include "system/head.php";
 ?>
-	<div class="container">
+	<div class="col-md-7">
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -17,7 +17,7 @@ include "system/head.php";
 				$result = mysqli_query($database,$sql);
 				while($data = mysqli_fetch_array($result)){
 					?>
-					<tr>
+					<tr onclick="location.href = 'admin-suspendedcard';">
 						<td><?=$data['Name']?></td>
 						<td><?=$data['StopID']?></td>
 						<td><?=$data['EnterFare']?></td>
@@ -35,4 +35,5 @@ include "system/head.php";
 				<button class="btn btn-primary" onclick="location.href = 'admin-viewstation';" type="submit">View Station</button>
 		</div>
 	</div>
+</div>
 </body>

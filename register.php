@@ -74,28 +74,27 @@
             </div>
         </div>
     </form>
-    <script type="text/javascript" src="js/emailck.js"></script>
     <script type="text/javascript">
-    $("#inputCardno").val('');
-    $("#inputCardno").prop("disabled",true);
-    $('input:radio').click(function() {
-        if($(this).hasClass('enable_tb')) {
-            $("#inputCardno").prop("disabled",false);
-        } else if ($(this).hasClass('disable_tb')) {
-            $("#inputCardno").val('');
-            $("#inputCardno").prop("disabled",true);
-        }
-    });
-    $('#inputCardno').blur(function() {
-        var cardno = $(this).val();
-        if (password === '') {
-            return false;
-        }
-        if(!(/[0-9]{16}/).test(cardno)){
-            alert('Breeze Card should be 16 numbers.');
-            return false;
-        }
-    });
+        $("#inputCardno").val('');
+        $("#inputCardno").prop("disabled",true);
+        $('input:radio').click(function() {
+            if($(this).hasClass('enable_tb')) {
+                $("#inputCardno").prop("disabled",false);
+            } else if ($(this).hasClass('disable_tb')) {
+                $("#inputCardno").val('');
+                $("#inputCardno").prop("disabled",true);
+            }
+        });
+        $('#inputCardno').blur(function() {
+            var cardno = $(this).val();
+            if (password === '') {
+                return false;
+            }
+            if(!(/[0-9]{16}/).test(cardno)){
+                alert('Breeze Card should be 16 numbers.');
+                return false;
+            }
+        });
     </script>
 </div>
 </body>
