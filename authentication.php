@@ -8,14 +8,20 @@ if(authenticated){
 
 if(@$_POST['action'] == "proc"){
     $username = mysqli_real_escape_string($database, $_POST['username']);
-    $password = md5($_POST['password']);
+    $password = password($_POST['password']);
     $sql = "SELECT * FROM user WHERE username = '{$username}' AND password = '{$password}'";
     $result = mysqli_query($database, $sql);
     if(mysqli_num_rows($result) == 1){
         $user = fetch($result, true);
         $_SESSION['authenticated'] = true;
-        $_SESSION['username'] = $user['username'];
-        location("/home");
+        $_SESSION['username'] = $user['Username'];
+        $_SESSION['admin'] = $user['IsAdmin'];
+        if ($_SESSION['admin'] == '1') {
+            location("/admin-home");
+        } else {
+            location("/home");
+        }
+        
     }else{
         $loginFailure = true;
     }

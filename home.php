@@ -1,14 +1,22 @@
 <?php
 include "system/head.php";
 ?>
+<script>
+function cardBalance() {
+    $("#balanceField").html("Loading...");
+    $.get( "/card_balance?card=" + $("#cardNo").val(), function( data ) {
+        $("#balanceField").html("$" + data.Value);
+    });
+}
+</script>
         <div class="form-group">
             <div class="row">
                 <label for="breezecard" class="col-sm-3 col-form-label">Breeze Card</label>
                 <div class="col-sm-6">
-                    <select class="form-control">
-                        <option selected="selected" value="">-- Select an option --</option>
+                    <select id="cardNo" class="form-control" onchange="cardBalance()">
+                        <option id="card" selected="selected" value="">-- Select an option --</option>
                         <?php
-                        $sql = "SELECT * From Breezecard";
+                        $sql = "SELECT * From Breezecard WHERE BelongsTo='{$_SESSION['username']}'";
                         $result = mysqli_query($database,$sql);
                         while($row = mysqli_fetch_array($result)){
                             $value = $row['Value'];
@@ -24,7 +32,7 @@ include "system/head.php";
             <div class="row">
                 <label for="balance" class="col-sm-3 col-form-label">Balance</label>
                 <div class="col-sm-9">
-                    <p class="form-control-static"><?php echo "$ " . $value; ?></p>
+                    <p class="form-control-static" id="balanceField"></p>
                 </div>
             </div>
         </div>
@@ -35,11 +43,11 @@ include "system/head.php";
                     <select class="form-control">
                         <option selected="selected" value="">-- Select an option --</option>
                         <?php
-                        $sql = "SELECT * From Breezecard";
+                        $sql = "SELECT * From Station";
                         $result = mysqli_query($database,$sql);
                         while($row = mysqli_fetch_array($result)){
                             ?>
-                            <option><?=$row['Value']?></option>
+                            <option><?=$row['Name']?></option>
                         <?php }?>
                     </select>
                 </div>
@@ -51,10 +59,14 @@ include "system/head.php";
                 <label for="breezecard" class="col-sm-3 col-form-label">Ending at</label>
                 <div class="col-sm-6">
                     <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
+                        <option selected="selected" value="">-- Select an option --</option>
+                        <?php
+                        $sql = "SELECT * From Station";
+                        $result = mysqli_query($database,$sql);
+                        while($row = mysqli_fetch_array($result)){
+                            ?>
+                            <option><?=$row['Name']?></option>
+                        <?php }?>
                     </select>
                 </div>
                 <button type="button" class="col-sm-3 btn btn-link">Link</button>

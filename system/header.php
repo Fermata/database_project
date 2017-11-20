@@ -14,7 +14,7 @@
 	mysqli_query($database,"set session character_set_connection=utf8;");
 	mysqli_query($database,"set session character_set_results=utf8;");
 	mysqli_query($database,"set session character_set_client=utf8;");
-	
+
 	function password($string){
 		return md5($string);
 	}
@@ -22,9 +22,9 @@
 	function fetch($result, $zero = false){
 		$row = array();
 		if($zero){
-			return mysql_fetch_assoc($result);
+			return mysqli_fetch_assoc($result);
 	    }else{
-			while($data = mysql_fetch_assoc($result)){
+			while($data = mysqli_fetch_assoc($result)){
 				$row[] = $data;
 			}
 		}
@@ -59,7 +59,8 @@
 	$_USER = array();
 
 	if(authenticated){
-		$result = mysqli_query($database, "SELECT * FROM user WHERE username = {$_SESSION['username']}") or die( mysql_error());
+		$query =  "SELECT * FROM user WHERE username = '{$_SESSION['username']}'";
+		$result = mysqli_query($database, $query) or die( mysql_error());
 		$_USER = fetch($result, true);
 	}
 

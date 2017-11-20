@@ -1,6 +1,4 @@
-<?php
-include "system/head.php";
-?>
+
 <!DOCTYPE html>
 <html>
 <body>
