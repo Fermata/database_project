@@ -28,6 +28,7 @@ window.onload = function cardBalance() {
             return;
         }
         if(data.EndsAt == null){
+            $('#cardNo').prop('disabled', true);            
             $('#startstation').prop('disabled', true);
             $('#tripstart').prop('disabled', true);
             $('#tripstart').css('color','red');
@@ -63,6 +64,7 @@ $(document).ready(function() {
         var cardno = $("#cardNo").val();
         $.get( "/start_trip?stopid=" + stopid+"&cardno"+cardno, function( data ) {
         });
+        $('#cardNo').prop('disabled', true);        
         $('#startstation').prop('disabled', true);
         (this).disabled = true;
         (this).style.color = "red";
@@ -73,6 +75,7 @@ $(document).ready(function() {
         $('#tripend').html('End Trip');
     })
     $('#tripend').on('click',function(){
+        $('#cardNo').prop('disabled', false);
         $('#startstation').prop('disabled', false);
         $('#tripstart').prop('disabled', false);
         $('#tripstart').css('color','blue');
@@ -98,6 +101,7 @@ $(document).ready(function() {
                 return;
             }
             if(data.EndsAt == null){
+                $('#cardNo').prop('disabled', true);
                 $('#startstation').prop('disabled', true);
                 $('#tripstart').prop('disabled', true);
                 $('#tripstart').css('color','red');
@@ -111,62 +115,61 @@ $(document).ready(function() {
         });
     })
 });
-
-
 </script>
-        <div class="col-md-7">
-            <div class="form-group row">
-                <label for="breezecard" class="col-sm-3 col-form-label">Breeze Card</label>
-                <div class="col-sm-6">
-                    <select id="cardNo" class="form-control" onchange="cardBalance()">
-                        <?php
-                        $sql = "SELECT * From Breezecard WHERE BelongsTo='{$_SESSION['username']}'";
-                        $result = mysqli_query($database,$sql);
-                        while($row = mysqli_fetch_array($result)){
-                            $value = $row['Value'];
-                            ?>
-                            <option><?=$row['BreezecardNum']?></option>
-                        <?php }?>
-                    </select>
+                <div class="col-md-10">
+                    <div class="form-group row">
+                        <label for="breezecard" class="col-sm-3 col-form-label">Breeze Card</label>
+                        <div class="col-sm-6">
+                            <select id="cardNo" class="form-control" onchange="cardBalance()">
+                                <?php
+                                $sql = "SELECT * From Breezecard WHERE BelongsTo='{$_SESSION['username']}'";
+                                $result = mysqli_query($database,$sql);
+                                while($row = mysqli_fetch_array($result)){
+                                    $value = $row['Value'];
+                                    ?>
+                                    <option><?=$row['BreezecardNum']?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                        <button type="button" onclick="location.href = 'managecards';" class="col-sm-3 btn btn-link">Manage Cards</button>
+                    </div>        
+                    <div class="form-group row">
+                        <label for="balance" class="col-sm-3 col-form-label">Balance</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-static" id="balanceField"></p>
+                        </div>
+                    </div>        
+                    <div class="form-group row">
+                        <label for="breezecard" class="col-sm-3 col-form-label">Start at</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" name="startstation" id="startstation">
+                                <?php
+                                $sql = "SELECT * From Station";
+                                $result = mysqli_query($database,$sql);
+                                while($row = mysqli_fetch_array($result)){
+                                    ?>
+                                    <option value="<?=$row['StopID']?>"><?=$row['Name']?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                        <button type="button" id="tripstart" class="col-sm-3 btn btn-link" value="Start Trip">Start Trip</button>
+                    </div>        
+                    <div class="form-group row">
+                        <label for="breezecard" class="col-sm-3 col-form-label">Ending at</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="endstation">
+                                <?php
+                                $sql = "SELECT * From Station";
+                                $result = mysqli_query($database,$sql);
+                                while($row = mysqli_fetch_array($result)){
+                                    ?>
+                                    <option><?=$row['Name']?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                        <button type="button" id="tripend" class="col-sm-3 btn btn-link">End Trip</button>
+                    </div>
                 </div>
-                <button type="button" onclick="location.href = 'managecards';" class="col-sm-3 btn btn-link">Manage Cards</button>
-            </div>        
-            <div class="form-group row">
-                <label for="balance" class="col-sm-3 col-form-label">Balance</label>
-                <div class="col-sm-9">
-                    <p class="form-control-static" id="balanceField"></p>
-                </div>
-            </div>        
-            <div class="form-group row">
-                <label for="breezecard" class="col-sm-3 col-form-label">Start at</label>
-                <div class="col-sm-6">
-                    <select class="form-control" name="startstation" id="startstation">
-                        <?php
-                        $sql = "SELECT * From Station";
-                        $result = mysqli_query($database,$sql);
-                        while($row = mysqli_fetch_array($result)){
-                            ?>
-                            <option value="<?=$row['StopID']?>"><?=$row['Name']?></option>
-                        <?php }?>
-                    </select>
-                </div>
-                <button type="button" id="tripstart" class="col-sm-3 btn btn-link" value="Start Trip">Start Trip</button>
-            </div>        
-            <div class="form-group row">
-                <label for="breezecard" class="col-sm-3 col-form-label">Ending at</label>
-                <div class="col-sm-6">
-                    <select class="form-control" id="endstation">
-                        <?php
-                        $sql = "SELECT * From Station";
-                        $result = mysqli_query($database,$sql);
-                        while($row = mysqli_fetch_array($result)){
-                            ?>
-                            <option><?=$row['Name']?></option>
-                        <?php }?>
-                    </select>
-                </div>
-                <button type="button" id="tripend" class="col-sm-3 btn btn-link">End Trip</button>
-            </div>
             </div>
         </div>
     </div>

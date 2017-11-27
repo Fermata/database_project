@@ -2,7 +2,10 @@
 	include("system/header.php");
 
 	if(authenticated){
-		location("/home");
+		if($_SESSION['admin'] === '1'){
+			location("/admin-home");
+			
+		}
 	}else{
 		location("/authentication");
 	}
